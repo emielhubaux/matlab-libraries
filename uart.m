@@ -256,7 +256,7 @@ classdef uart < handle
         end
         %% Now filter function captures 3 groups: filter name, filter value
         function result = filter(obj, filterStr)
-            expression = '\s*(!|)\s*(da|sa|fcs|fc|sd|sc|illegal)\s*(=|<>|)\s*(\d*)\s*(\&\&|and|AND|\|\||or|OR|)';
+            expression = '\s*(!|)\s*(da|sa|dsap|ssap|fcs|fc|sd|sc|illegal)\s*(=|<>|)\s*(\d*)\s*(\&\&|and|AND|\|\||or|OR|)';
             [tokens, matches] = regexp(lower(filterStr),expression,'tokens','match');
             findObjFilter = {};
             i = 1;
@@ -324,7 +324,21 @@ classdef uart < handle
                         case {'da'}
                             findObjFilter = {findObjFilter{:}, 'da', str2double(filterValue)};
                         case {'sa'}
-                            findObjFilter = {findObjFilter{:}, 'sa', str2double(filterValue)};                        
+                            findObjFilter = {findObjFilter{:}, 'sa', str2double(filterValue)};
+                        case {'dsap'}
+                            if filterValue == ""
+                                filterValueDouble = [];
+                            else
+                                filterValueDouble = str2double(filterValue);
+                            end
+                            findObjFilter = {findObjFilter{:}, 'dsap', filterValueDouble};
+                        case {'ssap'}
+                            if filterValue == ""
+                                filterValueDouble = [];
+                            else
+                                filterValueDouble = str2double(filterValue);
+                            end
+                            findObjFilter = {findObjFilter{:}, 'ssap', filterValueDouble};
                         case {'fcs'}
                             findObjFilter = {findObjFilter{:}, 'type_id', -1};
                         case {'fc'}
